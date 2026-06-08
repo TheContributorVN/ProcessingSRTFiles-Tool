@@ -1,0 +1,15 @@
+.projects
+.project
+.settings/
+.classpath 
+target/ 
+bin/
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+out/
+screens/
+*.png
+walkthrough.md
