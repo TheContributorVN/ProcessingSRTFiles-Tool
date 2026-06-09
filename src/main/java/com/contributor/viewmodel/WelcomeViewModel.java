@@ -1,27 +1,29 @@
 package com.contributor.viewmodel;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import com.contributor.config.AppConfig;
-import com.contributor.model.TreePath;
+import com.contributor.model.TreeNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class WelcomeViewModel {
     private final ObservableList<Path> pathList = FXCollections.observableArrayList();
+    private final ObjectProperty<TreeNode> treeNode = new SimpleObjectProperty<>();
 
     public WelcomeViewModel() {
         initData();
@@ -72,55 +74,53 @@ public class WelcomeViewModel {
      * 
      * @return TreePath
      */
-    private TreePath travesalFolder(Path path) {
-        TreePath treePath = new TreePath();
+    // private TreeNode travesalFolder(Path path) {
+    // FileTreeVisitor fileTreeVisitor = new FileTreeVisitor();
+    // try {
+    // Files.walkFileTree(path, fileTreeVisitor);
+    // } catch (Exception e) {
+    // return null;
+    // }
+    // return fileTreeVisitor.getRoot();
+    //
+    // }
+
+    /*
+     * Thêm folder vào danh sách file recent.json
+     * 
+     * @param path
+     */
+    public void addFolderToRecent(Path path) {
         try {
-            Files.walkFileTree(path, new FileVisitor<Path>() {
-                TreePath tree = treePath;
-                TreePath currentNode = treePath;
+            String folderName = path.getFileName().toString();
+            Map<String, Object> lastFolders = getDataFromRecentFile();
+            Map<String, Object> folders = new LinkedHashMap<>();
+            folders.put(folderName, path.toString());
+            if (lastFolders != null) {
 
-                @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    if (dir == path) {
-                        treePath.setRootNode(dir);
-                    } else {
-                        currentNode = new TreePath();
-                        tree.setRootNode(dir);
-                    }
-                    return FileVisitResult.CONTINUE;
+                for (Entry<String, Object> lastFolderItem : lastFolders.entrySet()) {
+                    folders.putIfAbsent(lastFolderItem.getKey(), lastFolderItem.getValue().toString());
                 }
-
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    if (Files.isDirectory(file)) {
-
-                    }
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-            });
+            }
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+                objectMapper.writeValue(AppConfig.getOpenRecentPath().toFile(), folders);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.show();
         }
-        return treePath;
-
-    }
-
-    private TreePath addFolderToRecent(Path path) {
-        String folderName = path.getFileName().toString();
-        return null;
     }
 
     public ObservableList<Path> getPastList() {
         return pathList;
+    }
+
+    public ObjectProperty<TreeNode> getTreeNode() {
+        return treeNode;
     }
 }

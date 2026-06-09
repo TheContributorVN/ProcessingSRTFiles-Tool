@@ -12,3 +12,4 @@ out/
 screens/
 *.png
 walkthrough.md
+.factorypath

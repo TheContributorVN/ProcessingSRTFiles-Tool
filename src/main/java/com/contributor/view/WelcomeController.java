@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TreeView;
 import javafx.stage.DirectoryChooser;
 
 import com.contributor.viewmodel.WelcomeViewModel;
@@ -35,7 +34,11 @@ public class WelcomeController implements Initializable {
 
     @FXML
     private void handleOnOpenDir(ActionEvent event) {
-
+        File selectedDirectory = directoryChooser.showDialog(null);
+        if (selectedDirectory == null) {
+            return;
+        }
+        welcomeViewModel.addFolderToRecent(selectedDirectory.toPath());
     }
 
     @Override
@@ -44,7 +47,5 @@ public class WelcomeController implements Initializable {
         directoryChooser.setTitle("Select Directory");
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         recentListView.setItems(welcomeViewModel.getPastList());
-        TreeView treeView = new TreeView();
-
     }
 }
