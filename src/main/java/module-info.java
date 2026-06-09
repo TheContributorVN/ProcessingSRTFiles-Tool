@@ -2,7 +2,11 @@ module com.contributor {
     requires javafx.controls;
     requires javafx.graphics;
     requires javafx.fxml;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires lombok;
 
-    opens com.contributor to javafx.controls, javafx.graphics;
+    opens com.contributor to javafx.controls, javafx.graphics, lombok;
     opens com.contributor.view to javafx.fxml, javafx.controls;
+    opens com.contributor.viewmodel to com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
 }
