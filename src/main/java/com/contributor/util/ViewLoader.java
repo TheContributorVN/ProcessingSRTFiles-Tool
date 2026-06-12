@@ -3,6 +3,7 @@ package com.contributor.util;
 import java.util.function.Consumer;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 
 public class ViewLoader {
 
@@ -19,6 +20,9 @@ public class ViewLoader {
             }
             return new ViewTuple<>(view, controller);
         } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Không tìm thấy view");
+            alert.show();
             return null;
         }
     }

@@ -17,15 +17,21 @@ public class FileTreeVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
         TreeNode node = new TreeNode(dir, true);
+        System.out.println("Chuẩn bị duyệt thư mục");
         if (!stack.isEmpty()) {
             stack.peek().addChildNode(node);
         }
-        stack.push(node);
+        try {
+            stack.push(node);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        System.out.println("Duyệt file trong thư mục");
         TreeNode node = new TreeNode(file, false);
         stack.peek().addChildNode(node);
         return FileVisitResult.CONTINUE;

@@ -1,6 +1,7 @@
 package com.contributor.model;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -13,14 +14,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TreeNode {
-    private Path rootNode;
+    private Path rootPath;
     private boolean isDirectory;
     private List<TreeNode> parentNodes;
 
     public TreeNode(Path rootNode, boolean isDirectory) {
-        this.rootNode = rootNode;
+        this.rootPath = rootNode;
         this.isDirectory = isDirectory;
-        this.parentNodes = this.isDirectory ? List.of() : null;
+        this.parentNodes = this.isDirectory ? new ArrayList<>() : null;
     }
 
     public void addChildNode(TreeNode childNode) {

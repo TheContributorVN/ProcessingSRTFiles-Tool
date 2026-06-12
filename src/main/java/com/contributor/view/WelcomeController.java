@@ -8,10 +8,14 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.DirectoryChooser;
 
+import com.contributor.util.ViewLoader;
+import com.contributor.util.ViewLoader.ViewTuple;
 import com.contributor.viewmodel.WelcomeViewModel;
 
 public class WelcomeController implements Initializable {
@@ -39,6 +43,12 @@ public class WelcomeController implements Initializable {
             return;
         }
         welcomeViewModel.addFolderToRecent(selectedDirectory.toPath());
+        ViewTuple<Parent, MainController> tuple = ViewLoader.load("/view/layout/MainView.fxml", (MainController c) -> {
+            System.out.println("Set Path To Main View Model");
+            c.setPathToViewModel(selectedDirectory.toPath());
+        });
+        Scene currentScene = btnOpenDir.getScene();
+        currentScene.setRoot(tuple.view());
     }
 
     @Override

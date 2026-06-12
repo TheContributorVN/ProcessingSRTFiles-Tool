@@ -9,21 +9,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 
 import com.contributor.config.AppConfig;
-import com.contributor.model.TreeNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class WelcomeViewModel {
     private final ObservableList<Path> pathList = FXCollections.observableArrayList();
-    private final ObjectProperty<TreeNode> treeNode = new SimpleObjectProperty<>();
 
     public WelcomeViewModel() {
         initData();
@@ -69,23 +64,6 @@ public class WelcomeViewModel {
     }
 
     /*
-     * 
-     * @param path
-     * 
-     * @return TreePath
-     */
-    // private TreeNode travesalFolder(Path path) {
-    // FileTreeVisitor fileTreeVisitor = new FileTreeVisitor();
-    // try {
-    // Files.walkFileTree(path, fileTreeVisitor);
-    // } catch (Exception e) {
-    // return null;
-    // }
-    // return fileTreeVisitor.getRoot();
-    //
-    // }
-
-    /*
      * Thêm folder vào danh sách file recent.json
      * 
      * @param path
@@ -97,7 +75,6 @@ public class WelcomeViewModel {
             Map<String, Object> folders = new LinkedHashMap<>();
             folders.put(folderName, path.toString());
             if (lastFolders != null) {
-
                 for (Entry<String, Object> lastFolderItem : lastFolders.entrySet()) {
                     folders.putIfAbsent(lastFolderItem.getKey(), lastFolderItem.getValue().toString());
                 }
@@ -111,16 +88,10 @@ public class WelcomeViewModel {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-            alert.show();
         }
     }
 
     public ObservableList<Path> getPastList() {
         return pathList;
-    }
-
-    public ObjectProperty<TreeNode> getTreeNode() {
-        return treeNode;
     }
 }

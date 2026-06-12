@@ -21,7 +21,6 @@ public class App extends Application {
         ViewTuple<Parent, WelcomeController> welcomeView = ViewLoader.load(
                 "/view/layout/WelcomeView.fxml",
                 (WelcomeController c) -> {
-                    return;
                 });
         Scene scene = new Scene(welcomeView.view(), 800, 600);
         primaryStage.setScene(scene);
@@ -29,6 +28,5 @@ public class App extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setTitle("ProcessingSRTFile");
         primaryStage.show();
-
     }
 }
