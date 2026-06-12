@@ -5,7 +5,6 @@ module com.contributor {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;
-    requires java.desktop;
 
     opens com.contributor to javafx.controls, javafx.graphics, lombok;
     opens com.contributor.view to javafx.fxml, javafx.controls, lombok;

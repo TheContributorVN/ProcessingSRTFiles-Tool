@@ -1,4 +1,4 @@
-package com.contributor.view;
+package com.contributor.custom;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -7,16 +7,16 @@ import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
-import com.contributor.viewmodel.MainViewModel;
+import com.contributor.viewmodel.LazyFileHandlerViewModel;
 
 public class LazyFileTreeItem extends TreeItem<Path> {
 
     private boolean childrenLoaded = false;
-    private final MainViewModel viewModel;
+    private final LazyFileHandlerViewModel viewModel;
 
-    public LazyFileTreeItem(Path path, MainViewModel viewModel) {
+    public LazyFileTreeItem(Path path) {
         super(path);
-        this.viewModel = viewModel;
+        this.viewModel = new LazyFileHandlerViewModel(path);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class LazyFileTreeItem extends TreeItem<Path> {
 
     @Override
     public boolean isLeaf() {
-        return !viewModel.isDirectory(getValue());
+        return !viewModel.isDirectory();
     }
 
     private List<TreeItem<Path>> loadChildren() {
-        return viewModel.loadChildren(getValue()).stream()
-                .map(path -> new LazyFileTreeItem(path, viewModel))
+        return viewModel.loadChildren().stream()
+                .map(f -> new LazyFileTreeItem(f.getPath()))
                 .collect(Collectors.toList());
     }
 

@@ -44,7 +44,6 @@ public class WelcomeController implements Initializable {
         }
         welcomeViewModel.addFolderToRecent(selectedDirectory.toPath());
         ViewTuple<Parent, MainController> tuple = ViewLoader.load("/view/layout/MainView.fxml", (MainController c) -> {
-            System.out.println("Set Path To Main View Model");
             c.setPathToViewModel(selectedDirectory.toPath());
         });
         Scene currentScene = btnOpenDir.getScene();

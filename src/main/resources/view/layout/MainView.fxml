@@ -2,24 +2,19 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TreeView?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-    prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.contributor.view.MainController">
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.contributor.view.MainController">
     <children>
-        <VBox alignment="CENTER" maxWidth="250.0" prefHeight="200.0" prefWidth="100.0"
-            HBox.hgrow="ALWAYS">
-            <TreeView fx:id="tviewPath">
+        <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="400.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+            <TreeView fx:id="tviewPath" VBox.vgrow="ALWAYS">
             </TreeView>
         </VBox>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0"
-            HBox.hgrow="ALWAYS">
+        <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
             <children>
-                <TableView fx:id="tFile" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tFile" prefHeight="200.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn prefWidth="75.0" />
                         <TableColumn prefWidth="75.0" text="Tên File" />

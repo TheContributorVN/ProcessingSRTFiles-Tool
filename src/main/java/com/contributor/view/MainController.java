@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 
+import com.contributor.custom.LazyFileTreeItem;
 import com.contributor.viewmodel.MainViewModel;
 
 public class MainController implements Initializable {
@@ -44,7 +45,7 @@ public class MainController implements Initializable {
 
         mViewModel.getCurrentPath().addListener((obs, old, newVal) -> {
             if (newVal != null) {
-                LazyFileTreeItem root = new LazyFileTreeItem(newVal, mViewModel);
+                LazyFileTreeItem root = new LazyFileTreeItem(newVal);
                 root.setExpanded(true);
                 tviewPath.setRoot(root);
             }

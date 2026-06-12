@@ -22,7 +22,7 @@ public class App extends Application {
                 "/view/layout/WelcomeView.fxml",
                 (WelcomeController c) -> {
                 });
-        Scene scene = new Scene(welcomeView.view(), 800, 600);
+        Scene scene = new Scene(welcomeView.view(), 1000, 600);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
