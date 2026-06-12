@@ -34,6 +34,7 @@ public class LazyFileTreeItem extends TreeItem<Path> {
     }
 
     private List<TreeItem<Path>> loadChildren() {
+
         return viewModel.loadChildren().stream()
                 .map(f -> new LazyFileTreeItem(f.getPath()))
                 .collect(Collectors.toList());

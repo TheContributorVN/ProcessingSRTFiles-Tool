@@ -18,12 +18,30 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FileSystemModel {
     private String fileName;
+    private String type;
+    private String size;
+    private String lang;
+    private boolean status;
     private Path path;
     private List<FileSystemModel> children = new ArrayList<>();
 
     public FileSystemModel(Path path) {
         this.path = path;
         this.fileName = path.getFileName().toString();
+        this.type = fileName.substring(fileName.lastIndexOf(".") + 1);
+        try {
+
+            this.size = String.valueOf(Files.size(path) / 1024.0);
+        } catch (IOException e) {
+            this.size = "0";
+        }
+        this.lang = "";
+        this.status = false;
+        if (!isDirectory()) {
+            String langBeforeProceesing = fileName.substring(fileName.lastIndexOf("_") + 1, fileName.lastIndexOf("."));
+            this.lang = langBeforeProceesing.isEmpty() ? "en" : langBeforeProceesing;
+            this.status = langBeforeProceesing.isEmpty();
+        }
     }
 
     public List<FileSystemModel> getListChildren() throws IOException {
