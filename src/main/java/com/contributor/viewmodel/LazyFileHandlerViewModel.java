@@ -20,7 +20,7 @@ public class LazyFileHandlerViewModel {
 
     public List<FileSystemModel> loadChildren() {
         try {
-            return fileSystemModel.getListChildren();
+            return fileSystemModel.getListChildren().stream().filter(f -> f.isDirectory()).toList();
         } catch (IOException e) {
             return List.of();
         }

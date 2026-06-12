@@ -12,6 +12,7 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 
 import com.contributor.custom.LazyFileTreeItem;
+import com.contributor.model.FileSystemModel;
 import com.contributor.viewmodel.MainViewModel;
 
 public class MainController implements Initializable {
@@ -19,7 +20,7 @@ public class MainController implements Initializable {
     @FXML
     private TreeView<Path> tviewPath;
     @FXML
-    private TableView<Object> tFile;
+    private TableView<FileSystemModel> tFile;
 
     private final MainViewModel mViewModel;
 
@@ -50,6 +51,12 @@ public class MainController implements Initializable {
                 tviewPath.setRoot(root);
             }
         });
+        tviewPath.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                mViewModel.setFileSystemPath(newVal.getValue());
+            }
+        });
+        tFile.setItems(mViewModel.getFileChildrenPath());
     }
 
     public void setPathToViewModel(Path path) {
