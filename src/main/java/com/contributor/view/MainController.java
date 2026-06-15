@@ -8,6 +8,10 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -18,10 +22,13 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import com.contributor.custom.LazyFileTreeItem;
 import com.contributor.model.FileSystemModel;
+import com.contributor.util.ViewLoader;
+import com.contributor.util.ViewLoader.ViewTuple;
 import com.contributor.viewmodel.MainViewModel;
 
 public class MainController implements Initializable {
@@ -42,9 +49,10 @@ public class MainController implements Initializable {
     private TableColumn<FileSystemModel, String> langCol;
     @FXML
     private TableColumn<FileSystemModel, String> statusCol;
-
     @FXML
     private TextField tfPath;
+    @FXML
+    private Button btnProcessing;
 
     private final MainViewModel mViewModel;
 
@@ -89,6 +97,8 @@ public class MainController implements Initializable {
             }
         });
 
+        btnProcessing.visibleProperty().bind(mViewModel.getShowProcessingButton());
+
         mViewModel.getRefreshTrigger().addListener((obs, old, newVal) -> {
             rebuildTreeView(mViewModel.getCurrentPath().get());
         });
@@ -120,7 +130,6 @@ public class MainController implements Initializable {
 
     @FXML
     private void handlerOnBrowserButton(ActionEvent evennt) {
-
         DirectoryChooser dirChooser = new DirectoryChooser();
         dirChooser.setTitle("Select Directory");
         dirChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -129,6 +138,24 @@ public class MainController implements Initializable {
         if (selectedDirectory != null) {
             mViewModel.setCurrentPath(selectedDirectory.toPath());
         }
+    }
+
+    @FXML
+    private void handlerOnProcessingButton(ActionEvent event) {
+        ViewTuple<Parent, ProcessingFileController> viewLoader = ViewLoader.load("/view/layout/ProcessingFileView.fxml",
+                (ProcessingFileController c) -> {
+                    c.setFileSystemToViewModel(mViewModel.getCurrentFileSystemPath());
+                });
+        Parent rootNode = viewLoader.view();
+        Scene currentScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) currentScene.getWindow();
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.setScene(new Scene(rootNode));
+        dialogStage.initOwner(stage);
+        dialogStage.centerOnScreen();
+        dialogStage.sizeToScene();
+        dialogStage.showAndWait();
     }
 
 }

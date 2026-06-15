@@ -30,7 +30,6 @@ public class FileSystemModel {
         this.fileName = path.getFileName().toString();
         this.type = fileName.substring(fileName.lastIndexOf(".") + 1);
         try {
-
             this.size = String.valueOf(Files.size(path) / 1024.0);
         } catch (IOException e) {
             this.size = "0";
@@ -38,9 +37,16 @@ public class FileSystemModel {
         this.lang = "";
         this.status = false;
         if (!isDirectory()) {
-            String langBeforeProceesing = fileName.substring(fileName.lastIndexOf("_") + 1, fileName.lastIndexOf("."));
-            this.lang = langBeforeProceesing.isEmpty() ? "en" : langBeforeProceesing;
-            this.status = langBeforeProceesing.isEmpty();
+            int underscoreIdx = fileName.lastIndexOf("_");
+            int dotIdx = fileName.lastIndexOf(".");
+            if (underscoreIdx != -1 && dotIdx > underscoreIdx) {
+                String langBeforeProceesing = fileName.substring(underscoreIdx + 1, dotIdx);
+                this.lang = langBeforeProceesing.isEmpty() ? "en" : langBeforeProceesing;
+                this.status = langBeforeProceesing.isEmpty();
+            } else {
+                this.lang = "en";
+                this.status = true;
+            }
         }
     }
 
@@ -51,6 +57,8 @@ public class FileSystemModel {
                 FileSystemModel fileSystemModel = new FileSystemModel(entry);
                 children.add(fileSystemModel);
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         children.sort((a, b) -> {
             boolean aDir = Files.isDirectory(a.getPath());

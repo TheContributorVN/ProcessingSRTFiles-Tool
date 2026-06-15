@@ -5,8 +5,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +22,7 @@ public class MainViewModel {
     private final StringProperty selectedDirectory = new SimpleStringProperty();
     private final ObjectProperty<Path> currentPath = new SimpleObjectProperty<>();
     private final IntegerProperty refreshTrigger = new SimpleIntegerProperty(0);
+    private final BooleanProperty showProcessingButton = new SimpleBooleanProperty(false);
     private final ObservableList<FileSystemModel> fileChildrenPath = FXCollections.observableArrayList();
     private Path fileSystemPath;
 
@@ -30,8 +33,9 @@ public class MainViewModel {
         fileChildrenPath.clear();
         try {
             List<FileSystemModel> listChildren = new FileSystemModel(fileSystemPath).getListChildren();
-            listChildren.stream().filter(f -> !f.isDirectory()).toList();
-            fileChildrenPath.addAll(listChildren);
+            List<FileSystemModel> filterListChildren = listChildren.stream().filter(f -> !f.isDirectory())
+                    .filter(f -> f.getType().equals("srt")).toList();
+            fileChildrenPath.addAll(filterListChildren);
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -39,6 +43,7 @@ public class MainViewModel {
 
     public void setFileSystemPath(Path path) {
         this.fileSystemPath = path;
+        this.showProcessingButton.setValue(true);
         loadFileChildren();
     }
 
@@ -73,5 +78,13 @@ public class MainViewModel {
 
     public StringProperty getSelectedDiretory() {
         return selectedDirectory;
+    }
+
+    public Path getCurrentFileSystemPath() {
+        return fileSystemPath;
+    }
+
+    public BooleanProperty getShowProcessingButton() {
+        return showProcessingButton;
     }
 }

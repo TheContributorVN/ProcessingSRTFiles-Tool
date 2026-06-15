@@ -9,5 +9,5 @@ module com.contributor {
     opens com.contributor to javafx.controls, javafx.graphics, lombok;
     opens com.contributor.view to javafx.fxml, javafx.controls, lombok;
     opens com.contributor.model to javafx.base;
-    opens com.contributor.viewmodel to com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
+    opens com.contributor.viewmodel to com.fasterxml.jackson.core, com.fasterxml.jackson.databind, javafx.base;
 }

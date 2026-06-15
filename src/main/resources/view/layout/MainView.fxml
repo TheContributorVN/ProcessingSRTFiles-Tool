@@ -34,6 +34,9 @@
                             text="Browser" HBox.hgrow="ALWAYS" />
                         <Button mnemonicParsing="false" onAction="#handlerOnRefreshButton"
                             text="Refresh" />
+                        <Button fx:id="btnProcessing" mnemonicParsing="false" text="Processing"
+                            onAction="#handlerOnProcessingButton" />
+
                     </children>
                     <VBox.margin>
                         <Insets bottom="10.0" right="10.0" top="10.0" />

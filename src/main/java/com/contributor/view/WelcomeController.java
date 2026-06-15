@@ -19,12 +19,8 @@ import com.contributor.util.ViewLoader.ViewTuple;
 import com.contributor.viewmodel.WelcomeViewModel;
 
 public class WelcomeController implements Initializable {
-    /**
-     *
-     */
     @FXML
     private Button btnOpenDir;
-
     @FXML
     private ListView<Path> recentListView;
 
